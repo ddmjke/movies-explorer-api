@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const validator = require('validator');
 
 const SALT_WORK_FACTOR = 10;
-
-const validateEmail = (email) => validator.isEmail(email);
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -18,10 +15,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: true,
-    validate: {
-      validator: validateEmail,
-      message: 'Неправильный формат почты',
-    },
   },
 
   password: {
@@ -44,3 +37,5 @@ userSchema.pre('save', function named(next) {
       throw new Error('hash error');
     });
 });
+
+module.exports = mongoose.model('user', userSchema);
