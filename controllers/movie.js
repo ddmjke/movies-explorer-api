@@ -55,11 +55,11 @@ module.exports.deleteMovieId = (req, res, next) => {
     .orFail(() => {
       next(new NotFoundError());
     })
-    .then((card) => {
-      if (!(card.owner.equals(req.user._id))) {
+    .then((movie) => {
+      if (!(movie.owner.equals(req.user._id))) {
         throw new ForbiddenError();
       }
-      card.remove()
+      movie.remove()
         .then((deleted) => res.send(deleted))
         .catch((err) => {
           if (err.name === 'CastError') {

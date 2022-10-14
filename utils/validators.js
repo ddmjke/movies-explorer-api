@@ -32,6 +32,12 @@ module.exports.postMovieValidator = celebrate({
   }),
 });
 
+module.exports.deleteMoviesValidator = celebrate({
+  params: Joi.object().keys({
+    _id: Joi.string().length(24).hex(),
+  }),
+});
+
 module.exports.patchUserValidator = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),

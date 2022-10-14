@@ -75,6 +75,8 @@ module.exports.patchUser = (req, res, next) => {
         next(new NotFoundError());
       } else if (err.message === 'NotFound') {
         next(new NotFoundError('User not found'));
+      } else if (err.code === 11000) {
+        next(new ConflictError('Email already in use'));
       } else {
         next(new DefaultError());
       }
