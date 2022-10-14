@@ -7,7 +7,7 @@ const helmet = require('helmet');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const corshandler = require('./middlewares/corshandler');
-const rateLimit = require('./utils/limiter');
+const limiter = require('./utils/limiter');
 const { errorHandler } = require('./utils/errorhandler');
 const { DB_DEV_ADDRESS } = require('./utils/config');
 
@@ -19,7 +19,7 @@ const app = express();
 
 app.use(helmet());
 app.use(requestLogger);
-app.use(rateLimit);
+app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(corshandler);
