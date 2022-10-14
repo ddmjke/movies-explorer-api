@@ -11,7 +11,7 @@ const corshandler = require('./middlewares/corshandler');
 
 require('dotenv').config();
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3001, NODE_ENV, DB_ADDRESS } = process.env;
 
 const app = express();
 
@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(corshandler);
 
-mongoose.connect('mongodb://localhost:27017/movieexplorerdb', {
+mongoose.connect(NODE_ENV === 'production' ? DB_ADDRESS : 'mongodb://localhost:27017/movieexplorerdb', {
   useNewUrlParser: true,
 });
 
@@ -44,8 +44,13 @@ app.use(errorLogger);
 
 app.use(errors());
 
-app.use((err, req, res, _) => {
-  res.status(err.statusCode || 500).send({ message: err.message || 'Internal server error' });
+app.use((err, req, res, next) => {
+  res.status(err.statusCode || 500)
+    .send({
+      message: err.statusCode === 500
+        ? 'Internal server error'
+        : err.message,
+    });
+  next();
 });
-
 app.listen(PORT);
