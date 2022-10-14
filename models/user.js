@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-
-const SALT_WORK_FACTOR = 10;
+const { JWT_SALT_FACTOR } = require('../utils/config');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -28,7 +27,7 @@ userSchema.pre('save', function named(next) {
   const user = this;
   if (!user.isModified('password')) return next();
 
-  return bcrypt.hash(user.password, SALT_WORK_FACTOR)
+  return bcrypt.hash(user.password, JWT_SALT_FACTOR)
     .then((hash) => {
       user.password = hash;
       return next();

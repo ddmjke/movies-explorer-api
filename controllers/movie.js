@@ -53,7 +53,7 @@ module.exports.postMovie = (req, res, next) => {
 module.exports.deleteMovieId = (req, res, next) => {
   Movie.findById(req.params.movieId)
     .orFail(() => {
-      next(new NotFoundError());
+      throw new NotFoundError();
     })
     .then((movie) => {
       if (!(movie.owner.equals(req.user._id))) {
@@ -62,14 +62,18 @@ module.exports.deleteMovieId = (req, res, next) => {
       movie.remove()
         .then((deleted) => res.send(deleted))
         .catch((err) => {
-          if (err.name === 'CastError') {
-            next(new BadRequestError());
-          } else if (err.message === 'NotFound') {
+          if (err.message === 'NotFound') {
             next(new NotFoundError());
           } else {
             next(new DefaultError());
           }
         });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError());
+      } else {
+        next(err);
+      }
+    });
 };

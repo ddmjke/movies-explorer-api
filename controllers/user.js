@@ -6,8 +6,7 @@ const BadRequestError = require('../utils/errors/BadRequestError');
 const NotFoundError = require('../utils/errors/NotFoundError');
 const ConflictError = require('../utils/errors/ConflictError');
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
-
-require('dotenv').config();
+const { PRODUCTION_SECRET } = require('../utils/config');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -42,7 +41,7 @@ module.exports.login = (req, res, next) => {
   User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        throw new UnauthorizedError();
+        throw new UnauthorizedError('Email&password is incorrect');
       } else {
         bcrypt.compare(password, user.password)
           .then((matches) => {
@@ -51,7 +50,7 @@ module.exports.login = (req, res, next) => {
             } else {
               const token = jwt.sign(
                 { _id: user._id },
-                NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+                NODE_ENV === 'production' ? JWT_SECRET : PRODUCTION_SECRET,
                 { expiresIn: '7d' },
               );
               res.send({ token });
