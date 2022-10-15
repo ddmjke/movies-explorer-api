@@ -27,8 +27,8 @@ module.exports.postMovieValidator = celebrate({
     trailerLink: Joi.string().required().pattern(linkRegEx),
     thumbnail: Joi.string().required().pattern(linkRegEx),
     movieId: Joi.number().required(),
-    nameRu: Joi.string().required(),
-    nameEn: Joi.string().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
   }),
 });
 
