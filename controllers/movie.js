@@ -22,8 +22,8 @@ module.exports.postMovie = (req, res, next) => {
     trailerLink,
     thumbnail,
     movieId,
-    nameRu,
-    nameEn,
+    nameRU,
+    nameEN,
   } = req.body;
 
   Movie.create({
@@ -36,8 +36,8 @@ module.exports.postMovie = (req, res, next) => {
     trailerLink,
     thumbnail,
     movieId,
-    nameRu,
-    nameEn,
+    nameRU,
+    nameEN,
     owner: req.user._id,
   })
     .then((card) => res.send(card))
