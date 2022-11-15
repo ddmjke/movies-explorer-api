@@ -4,6 +4,7 @@ const { postMovieValidator, deleteMoviesValidator } = require('../utils/validato
 
 router.get('/movies', getMovies);
 router.post('/movies', postMovieValidator, postMovie);
-router.delete('/movies/:movieId', deleteMoviesValidator, deleteMovieId);
+// router.delete('/movies/:movieId', deleteMoviesValidator, deleteMovieId);
+router.delete('/movies/:movieId', deleteMovieId);
 
 module.exports = router;
