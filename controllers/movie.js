@@ -51,7 +51,7 @@ module.exports.postMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovieId = (req, res, next) => {
-  Movie.findOne({ movieId: req.params.movieId })
+  Movie.findById(req.params.movieId)
     .orFail(() => {
       throw new NotFoundError();
     })
